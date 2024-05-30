@@ -12,7 +12,7 @@ FinderSchema = new Schema({
 });
 
 FinderSchema.virtual("url").get(function () {
-  return `/catalog/finder/${this._id}`;
+  return `/inventory/finder/${this._id}`;
 });
 
 FinderSchema.virtual("date_of_birth_formatted").get(function () {

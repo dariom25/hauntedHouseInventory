@@ -9,3 +9,5 @@ CategorySchema = new Schema({
 CategorySchema.virtual("url").get(function () {
   return `/catalog/place/${_id}`;
 });
+
+module.exports = mongoose.model("Category", CategorySchema);

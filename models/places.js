@@ -9,3 +9,5 @@ const PlaceSchema = new Schema({
 PlaceSchema.virtual("url").get(function () {
   return `/catalog/place/${this._id}`;
 });
+
+module.exports = mongoose.model("Place", PlaceSchema);

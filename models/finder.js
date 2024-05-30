@@ -36,6 +36,10 @@ FinderSchema.virtual("name").get(function () {
   return fullname;
 });
 
-FinderSchema.virtual("age").get(function(){
-    return this.date_of_birth ? new Date().getFullYear() - date_of_birth.getFullYear() : "" //maybe here is an error with the instanciation of Date 
-})
+FinderSchema.virtual("age").get(function () {
+  return this.date_of_birth
+    ? new Date().getFullYear() - date_of_birth.getFullYear()
+    : ""; //maybe here is an error with the instanciation of Date
+});
+
+module.exports = mongoose.model("Finder", FinderSchema);

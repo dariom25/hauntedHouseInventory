@@ -1,8 +1,8 @@
-const Item = require("../models/item")
+const Item = require("../models/items")
 const asyncHandler = require("express-async-handler")
 
 exports.index = asyncHandler(async (req, res, next) => {
-    //sende data for homepage
+    res.render("index", {title: "Hallo"})
 })
 
 exports.item_list = asyncHandler(async (req, res, next) => {

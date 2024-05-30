@@ -1,8 +1,23 @@
 const Item = require("../models/items")
+const Place = require("../models/places")
+const Finder = require("../models/finder")
+const Category = require("../models/category")
 const asyncHandler = require("express-async-handler")
 
 exports.index = asyncHandler(async (req, res, next) => {
-    res.render("index", {title: "Hallo"})
+    const [
+        numItems,
+        numPlaces,
+        numFinders,
+        numCategories
+    ] = await Promise.all([
+        Item.countDocuments({}).exec(),
+        Place.countDocuments({}).exec(),
+        Finder.countDocuments({}).exec(),
+        Category.countDocuments({}).exec()
+    ])
+    
+    res.render("index", {title: "Home", item_count: numItems, place_count: numPlaces, finder_count: numFinders, category_count: numCategories})
 })
 
 exports.item_list = asyncHandler(async (req, res, next) => {

@@ -1,4 +1,4 @@
-const Place = require("../models/place")
+const Place = require("../models/places")
 const asyncHandler = require("express-async-handler")
 
 exports.place_list = asyncHandler(async (req, res, next) => {

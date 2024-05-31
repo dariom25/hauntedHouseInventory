@@ -1,5 +1,14 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  h1 Inventory of Haunted Houses
+  h2 #{title}:
+
+  p Number of inventarised 
+    a(href="/inventory/items") items: #{item_count}
+  p Number of inventarised 
+    a(href="/invetory/places") places: #{place_count}
+  p Number of inventarised 
+    a(href="/inventory/finders") finders: #{finder_count}
+  p Number of inventarised 
+    a(href="/inventory/categories") categrories: #{category_count}

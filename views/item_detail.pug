@@ -1,0 +1,16 @@
+extends layout
+
+block content
+    h1 Inventory of Haunted Houses
+    h2 More information about: #{title}
+
+    div.information-container
+        p Name: #{item.name}
+        p Summary: #{item.summary}
+        p Finder: #{item.finder.name}
+        p Place: #{item.place.name}
+        p Category: #{item.category.name}
+
+    div.link-containter
+        a(href="/inventory/item/update") Update Item
+        a(href="/inventory/item/delete") Delete Item

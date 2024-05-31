@@ -3,6 +3,7 @@ const Place = require("../models/places");
 const Finder = require("../models/finder");
 const Category = require("../models/category");
 const asyncHandler = require("express-async-handler");
+const { body, validationResult } = require("express-validator");
 
 exports.index = asyncHandler(async (req, res, next) => {
   const [numItems, numPlaces, numFinders, numCategories] = await Promise.all([
@@ -61,9 +62,44 @@ exports.item_create_get = asyncHandler(async (req, res, next) => {
   });
 });
 
-exports.item_create_post = asyncHandler(async (req, res, next) => {
-  //send data from form
-});
+exports.item_create_post = [
+  body("name", "Name must not be empty.").trim().isLength({ min: 1 }).escape(),
+  body("summary", "Summary must not be empty.").trim().escape(),
+  body("place", "Place must not be empty.").trim().escape(),
+  body("finder", "Finder must not be empty.").trim().escape(),
+  body("category", "Category must not be empty.").trim().escape(),
+
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+
+    const item = new Item({
+      name: req.body.name,
+      summary: req.body.summary,
+      place: req.body.place,
+      finder: req.body.finder,
+      category: req.body.category,
+    });
+
+    if (!errors.isEmpty()) {
+      const [allFinders, allPlaces, allCategories] = await Promise.all([
+        Finder.find().sort({ last_name: 1 }).exec(),
+        Place.find().sort({ name: 1 }).exec(),
+        Category.find().sort({ name: 1 }).exec(),
+      ]);
+
+      res.render("item_form", {
+        title: "Inventarise Item",
+        finders: allFinders,
+        places: allPlaces,
+        categories: allCategories,
+        errors: errors.array(),
+      });
+    } else {
+      await item.save();
+      res.redirect(item.url);
+    }
+  }),
+];
 
 exports.item_delete_get = asyncHandler(async (req, res, next) => {
   //send delete form

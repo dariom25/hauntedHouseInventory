@@ -47,7 +47,18 @@ exports.item_detail = asyncHandler(async (req, res, next) => {
 });
 
 exports.item_create_get = asyncHandler(async (req, res, next) => {
-  //send create form
+  const [allFinders, allPlaces, allCategories] = await Promise.all([
+    Finder.find().sort({ last_name: 1 }).exec(),
+    Place.find().sort({ name: 1 }).exec(),
+    Category.find().sort({ name: 1 }).exec(),
+  ]);
+
+  res.render("item_form", {
+    title: "Invetarise Item",
+    finders: allFinders,
+    places: allPlaces,
+    categories: allCategories,
+  });
 });
 
 exports.item_create_post = asyncHandler(async (req, res, next) => {

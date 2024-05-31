@@ -22,7 +22,9 @@ exports.index = asyncHandler(async (req, res, next) => {
 });
 
 exports.item_list = asyncHandler(async (req, res, next) => {
-  //send item list
+  const allItems = await Item.find({}).exec()
+
+  res.render("item_list", {title: "Item List", item_list: allItems})
 });
 
 exports.item_detail = asyncHandler(async (req, res, next) => {

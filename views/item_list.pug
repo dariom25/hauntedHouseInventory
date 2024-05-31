@@ -1,0 +1,14 @@
+extends layout
+
+block content
+    h1 Inventory of Haunted Houses
+    h2 #{title}
+
+    if item_list.length
+        ul
+            each item in item_list
+                li
+                    a(href=item.url) #{item.name}
+                    | (#{item.finder})
+    else
+        p No items found.

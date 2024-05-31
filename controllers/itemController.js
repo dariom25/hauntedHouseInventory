@@ -54,7 +54,7 @@ exports.item_create_get = asyncHandler(async (req, res, next) => {
   ]);
 
   res.render("item_form", {
-    title: "Invetarise Item",
+    title: "Inventarise Item",
     finders: allFinders,
     places: allPlaces,
     categories: allCategories,

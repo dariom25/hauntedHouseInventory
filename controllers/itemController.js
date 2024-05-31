@@ -22,9 +22,12 @@ exports.index = asyncHandler(async (req, res, next) => {
 });
 
 exports.item_list = asyncHandler(async (req, res, next) => {
-  const allItems = await Item.find({}).exec()
+  const allItems = await Item.find({}, "name finder")
+    .sort({ name: 1 })
+    .populate("finder")
+    .exec();
 
-  res.render("item_list", {title: "Item List", item_list: allItems})
+  res.render("item_list", { title: "Item List", item_list: allItems });
 });
 
 exports.item_detail = asyncHandler(async (req, res, next) => {

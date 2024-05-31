@@ -8,7 +8,8 @@ block content
         ul
             each item in item_list
                 li
-                    a(href=item.url) #{item.name}
-                    | (#{item.finder})
+                    p 
+                        a(href=item.url) #{item.name}
+                        |  (#{item.finder.name})
     else
         p No items found.

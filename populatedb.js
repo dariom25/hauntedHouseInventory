@@ -1,13 +1,5 @@
 #! /usr/bin/env node
 
-//here the password is missing
-console.log(
-  'This script populates some test items, finders, places and iteminstances to your database. Specified database as argument - e.g.: node populatedb "mongodb+srv://cooluser:coolpassword@cluster0.lz91hw2.mongodb.net/local_library?retryWrites=true&w=majority"'
-);
-
-// Get arguments passed on command line
-const userArgs = process.argv.slice(2);
-
 const Item = require("./models/items");
 const Finder = require("./models/finder");
 const Category = require("./models/category");
@@ -21,7 +13,8 @@ const places = [];
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
 
-const mongoDB = userArgs[0];
+const mongoDB =
+  "mongodb+srv://dario:qVqH2vGkKYvkD1Aw@cluster0.t0lg0kt.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 main().catch((err) => console.log(err));
 
@@ -30,10 +23,10 @@ async function main() {
   console.log("Debug: About to connect");
   await mongoose.connect(mongoDB);
   console.log("Debug: Should be connected?");
-  await createPlaces();
-  await createfinders();
+  await createFinders();
+  await createPlace();
+  await createCategory();
   await createItems();
-  await createitemInstances();
   console.log("Debug: Closing mongoose");
   mongoose.connection.close();
 }
@@ -68,7 +61,7 @@ async function finderCreate(
   console.log(`Added finder: ${first_name} ${last_name}`);
 }
 
-async function itemCreate(index, name, place, summary, finder, category) {
+async function itemCreate(index, name, summary, place, finder, category) {
   const itemdetails = {
     name: name,
     summary: summary,
@@ -96,118 +89,121 @@ async function createItems() {
       0,
       "Cursed Locket",
       "A locket that whispers eerie secrets at midnight.",
-      "Winchester Mystery House",
-      "Jonathan Crane",
-      "Jewelry"
+      places[0],
+      finders[0],
+      categories[0]
     ),
     itemCreate(
       1,
       "Haunted Doll",
       "A doll that moves on its own and causes nightmares.",
-      "Amityville House",
-      "Emily Rose",
-      "Toys"
+      places[1],
+      finders[1],
+      categories[1]
     ),
     itemCreate(
       2,
       "Phantom Mirror",
       "A mirror that reflects ghostly figures not present in the room.",
-      "Borley Rectory",
-      "Alice Thompson",
-      "Furniture"
+      places[2],
+      finders[2],
+      categories[2]
     ),
     itemCreate(
       3,
       "Spectral Lantern",
       "An old lantern that glows with a ghostly light, even without fuel.",
-      "Tower of London",
-      "Henry Mason",
-      "Lighting"
+      places[3],
+      finders[3],
+      categories[3]
     ),
     itemCreate(
       4,
       "Witch's Broom",
       "A broom that is said to fly on its own.",
-      "Salem Witch House",
-      "Martha Blackwood",
-      "Artifacts"
+      places[4],
+      finders[4],
+      categories[4]
     ),
     itemCreate(
       5,
       "Ghostly Music Box",
       "A music box that plays haunting melodies by itself.",
-      "Winchester Mystery House",
-      "Jonathan Crane",
-      "Toys"
+      places[0],
+      finders[0],
+      categories[0]
     ),
     itemCreate(
       6,
       "Bewitched Necklace",
       "A necklace that tightens around the wearer's neck when spirits are near.",
-      "Amityville House",
-      "Emily Rose",
-      "Jewelry"
+      places[1],
+      finders[1],
+      categories[1]
     ),
     itemCreate(
       7,
       "Cursed Chair",
       "A chair that causes a cold shiver and bad luck to anyone who sits in it.",
-      "Borley Rectory",
-      "Alice Thompson",
-      "Furniture"
+      places[2],
+      finders[2],
+      categories[2]
     ),
     itemCreate(
       8,
       "Ethereal Candlestick",
       "A candlestick that emits a blue flame without any wax.",
-      "Tower of London",
-      "Henry Mason",
-      "Lighting"
+      places[3],
+      finders[3],
+      categories[3]
     ),
     itemCreate(
       9,
       "Witch's Cauldron",
-      "A cauldron used by witches to brew potions, said to bubble by itself."
+      "A cauldron used by witches to brew potions, said to bubble by itself.",
+      places[4],
+      finders[4],
+      categories[4]
     ),
     itemCreate(
       10,
       "Haunted Portrait",
       "A portrait that causes eerie feelings and seems to follow you with its eyes.",
-      "Winchester Mystery House",
-      "Jonathan Crane",
-      "Furniture"
+      places[0],
+      finders[0],
+      categories[0]
     ),
     itemCreate(
       11,
       "Specter’s Ring",
       "A ring that is icy cold to the touch and brings visions of the past.",
-      "Amityville House",
-      "Emily Rose",
-      "Jewelry"
+      places[1],
+      finders[1],
+      categories[1]
     ),
     itemCreate(
       12,
       "Phantasmal Dollhouse",
       "A dollhouse where the dolls move on their own at night.",
-      "Borley Rectory",
-      "Alice Thompson",
-      "Toys"
+      places[2],
+      finders[2],
+      categories[2]
     ),
     itemCreate(
       13,
       "Ghostly Lantern",
       "A lantern that flickers with a greenish light, even without fuel.",
-      "Tower of London",
-      "Henry Mason",
-      "Lighting"
+      places[3],
+      finders[3],
+      categories[3]
     ),
     itemCreate(
       14,
       "Hexed Spellbook",
       "A spellbook with pages that turn by themselves and whispers incantations.",
-      "Salem Witch House",
-      "Martha Blackwood",
-      "Artifacts"
+      places[4],
+      finders[4],
+      categories[4]
     ),
   ]);
 }
@@ -264,20 +260,20 @@ async function createFinders() {
 
 async function createCategory() {
   await Promise.all([
-    categoryCreate("Jewelry"),
-    categoryCreate("Toys"),
-    categoryCreate("Furniture"),
-    categoryCreate("Lighting"),
-    categoryCreate("Artifacts")
-  ])
+    categoryCreate(0, "Jewelry"),
+    categoryCreate(1, "Toys"),
+    categoryCreate(2, "Furniture"),
+    categoryCreate(3, "Lighting"),
+    categoryCreate(4, "Artifacts"),
+  ]);
 }
 
 async function createPlace() {
   await Promise.all([
-    placeCreate("Winchester Mystery House"),
-    placeCreate("Amityville House"),
-    placeCreate("Borley Rectory"),
-    placeCreate("Tower of London"),
-    placeCreate("Salem Witch House")
-  ])
+    placeCreate(0, "Winchester Mystery House"),
+    placeCreate(1, "Amityville House"),
+    placeCreate(2, "Borley Rectory"),
+    placeCreate(3, "Tower of London"),
+    placeCreate(4, "Salem Witch House"),
+  ]);
 }

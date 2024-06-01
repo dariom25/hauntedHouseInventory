@@ -12,3 +12,8 @@ block content
             label(for="password") Secret password:
             input#password(name="password", required, type="text")
         button(type="submit") Delete
+    
+    if errors
+        ul 
+            for error in errors 
+                li!= error.msg

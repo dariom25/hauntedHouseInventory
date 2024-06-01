@@ -121,7 +121,6 @@ exports.item_delete_post = [
 
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
-    console.log(errors);
     const item = await Item.findById(req.params.id).exec();
 
     if (!errors.isEmpty()) {
@@ -154,7 +153,7 @@ exports.item_update_get = asyncHandler(async (req, res, next) => {
     res.redirect("/inventory/items");
   }
 
-  res.render("item_form", {
+  res.render("item_update", {
     title: "Update Item",
     finders: allFinders,
     places: allPlaces,
@@ -163,6 +162,43 @@ exports.item_update_get = asyncHandler(async (req, res, next) => {
   });
 });
 
-exports.item_update_post = asyncHandler(async (req, res, next) => {
-  //send data from form and update entry
-});
+exports.item_update_post = [
+  body("password", "Password must not be empty.").trim().escape(),
+  body("password").equals("secret").withMessage("Enter the correct password"),
+
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+    const item = new Item({
+      name: req.body.name,
+      finder: req.body.finder,
+      place: req.body.place,
+      category: req.body.category,
+      summary: req.body.summary,
+    });
+
+    if (!errors.isEmpty()) {
+      const [item, allFinders, allPlaces, allCategories] = await Promise.all([
+        Item.findById(req.params.id)
+          .populate("place")
+          .populate("finder")
+          .populate("category")
+          .exec(),
+        Finder.find().sort({ last_name: 1 }).exec(),
+        Place.find().sort({ name: 1 }).exec(),
+        Category.find().sort({ name: 1 }).exec(),
+      ]);
+
+      res.render("item_update", {
+        title: "Update Item",
+        finders: allFinders,
+        places: allPlaces,
+        categories: allCategories,
+        item: item,
+        errors: errors.array(),
+      });
+    } else {
+      const updatedItem = await Item.findByIdAndUpdate(req.params.id, item, {});
+      res.redirect(updatedItem.url);
+    }
+  }),
+];

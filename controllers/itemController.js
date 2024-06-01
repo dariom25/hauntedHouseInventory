@@ -4,6 +4,7 @@ const Finder = require("../models/finder");
 const Category = require("../models/category");
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
+const { finder_list } = require("./finderController");
 
 exports.index = asyncHandler(async (req, res, next) => {
   const [numItems, numPlaces, numFinders, numCategories] = await Promise.all([
@@ -120,7 +121,7 @@ exports.item_delete_post = [
 
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
-    console.log(errors)
+    console.log(errors);
     const item = await Item.findById(req.params.id).exec();
 
     if (!errors.isEmpty()) {
@@ -138,7 +139,28 @@ exports.item_delete_post = [
 ];
 
 exports.item_update_get = asyncHandler(async (req, res, next) => {
-  //send update form
+  const [item, allFinders, allPlaces, allCategories] = await Promise.all([
+    Item.findById(req.params.id)
+      .populate("place")
+      .populate("finder")
+      .populate("category")
+      .exec(),
+    Finder.find().sort({ last_name: 1 }).exec(),
+    Place.find().sort({ name: 1 }).exec(),
+    Category.find().sort({ name: 1 }).exec(),
+  ]);
+
+  if (item === null) {
+    res.redirect("/inventory/items");
+  }
+
+  res.render("item_form", {
+    title: "Update Item",
+    finders: allFinders,
+    places: allPlaces,
+    categories: allCategories,
+    item: item,
+  });
 });
 
 exports.item_update_post = asyncHandler(async (req, res, next) => {

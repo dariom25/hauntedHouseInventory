@@ -1,0 +1,16 @@
+extends layout
+
+block content
+    h2 #{title}
+
+    if finder_list.length
+        ul
+            each finder in finder_list
+                li
+                    p 
+                        a(href=finder.url) #{finder.name}
+                        |  (#{finder.date_of_birth_formatted} - #{finder.date_of_death_formatted}) 
+                        br
+                        |  Items found: #{finder.no_of_found_items}
+    else
+        p No finders found.

@@ -174,6 +174,7 @@ exports.item_update_post = [
       place: req.body.place,
       category: req.body.category,
       summary: req.body.summary,
+      _id: req.params.id
     });
 
     if (!errors.isEmpty()) {

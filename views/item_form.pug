@@ -21,7 +21,7 @@ block content
                         option(value=finder._id) #{finder.name}
         div.form-group
             label(for="summary") Summary:
-            textarea#summary(name="summary" placeholder="Write a description of the item." required value=undefined===item ? "":item.summary)
+            textarea#summary(name="summary" placeholder="Write a description of the item." required)=undefined===item ? "":item.summary
         div.form-group
             label(for="place") Place:
             select#place(name="place" required)
@@ -46,6 +46,7 @@ block content
                             option(value=category._id) #{category.name} 
                     else
                         option(value=category._id) #{category.name}
+        button(type="submit") Submit
     if errors
         ul 
             for error in errors 

@@ -102,7 +102,7 @@ exports.item_create_post = [
 ];
 
 exports.item_delete_get = asyncHandler(async (req, res, next) => {
-  const item = await Item.find(req.params.id).exec()
+  const item = await Item.findById(req.params.id).exec()
 
   if (item===null) {
     res.redirect("/inventory/items")

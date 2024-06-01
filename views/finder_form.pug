@@ -1,0 +1,25 @@
+extends layout
+
+block content
+    h2 #{title}
+
+    form(method="POST")
+        div.form-group
+            label(for="first_name") First name:
+            input#name(type="text", placeholder="Name of item" name="first_name" required)
+        div.form-group
+            label(for="last_name") Last name:
+            input#name(type="text", placeholder="Name of item" name="last_name" required)
+        div.form-group
+            label(for="birth") Date of birth:
+            input#birth(type="date", name="birth")
+        div.form-group
+            label(for="death") Date of birth:
+            input#death(type="date", name="death")
+        div.form-group
+            label(for="cause_death") Cause of death:
+            textarea#cause_death(name="cause_death" placeholder="Why did the finder die?" required)
+        div.form-group
+            label(for="found_items") Number of found items:
+            input#found_items(type="number", name="found_items")
+        button(type="submit") Submit

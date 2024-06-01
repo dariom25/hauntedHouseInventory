@@ -46,3 +46,7 @@ block content
                             option(value=category._id) #{category.name} 
                     else
                         option(value=category._id) #{category.name}
+    if errors
+        ul 
+            for error in errors 
+                li!= error.msg

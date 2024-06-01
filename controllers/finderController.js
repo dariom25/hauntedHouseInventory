@@ -8,7 +8,15 @@ exports.finder_list = asyncHandler(async (req, res, next) => {
 });
 
 exports.finder_detail = asyncHandler(async (req, res, next) => {
-  //send finder details
+  const finder = await Finder.findById(req.params.id).exec();
+
+  if (finder === null) {
+    const err = new Error("Finders not found");
+    err.status = 404;
+    return next(err);
+  }
+
+  res.render("finder_detail", { title: finder.name, finder: finder });
 });
 
 exports.finder_create_get = asyncHandler(async (req, res, next) => {

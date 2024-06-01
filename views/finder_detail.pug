@@ -1,0 +1,15 @@
+extends layout
+
+block content
+    h2 More information about: #{title}
+
+    div.information-container
+        p Name: #{finder.name}
+        p Birth- and Deathday: #{finder.date_of_birth_formatted} - #{finder.date_of_death_formatted}
+        p Cause of death: #{finder.cause_of_death}
+        p Number of found items: #{finder.no_of_found_items}
+    hr
+    div.link-containter
+        a(href="/inventory/finders") Back
+        a(href=finder.url+"/update") Update Finder
+        a(href=finder.url+"/delete") Delete Finder

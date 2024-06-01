@@ -1,0 +1,56 @@
+extends layout
+
+block content
+    h2 #{title}
+
+    form(method="POST")
+        div.form-group
+            label(for="name") Name:
+            input#name(type="text", placeholder="Name of item" name="name" required value=(undefined===item ? "" : item.name))
+        div.form-group
+            label(for="finder") Finder:
+            select#finder(name="finder" required)
+                option(value="") Select a finder
+                for finder in finders
+                    if item
+                        if finder._id.toString()===item.finder._id.toString()
+                            option(value=finder._id selected) #{finder.name}
+                        else
+                            option(value=finder._id) #{finder.name}
+                    else
+                        option(value=finder._id) #{finder.name}
+        div.form-group
+            label(for="summary") Summary:
+            textarea#summary(name="summary" placeholder="Write a description of the item." required)=undefined===item ? "":item.summary
+        div.form-group
+            label(for="place") Place:
+            select#place(name="place" required)
+                option(value="") Select a Place
+                for place in places
+                    if item 
+                        if place._id.toString()===item.place._id.toString()
+                            option(value=place._id selected) #{place.name}
+                        else
+                            option(value=place._id) #{place.name} 
+                    else
+                        option(value=place._id) #{place.name}
+        div.form-group
+            label(for="category") Category:
+            select#category(name="category" required)
+                option(value="") Select a Category
+                for category in categories
+                    if item 
+                        if category._id.toString()===item.category._id.toString()
+                            option(value=category._id selected) #{category.name}
+                        else
+                            option(value=category._id) #{category.name} 
+                    else
+                        option(value=category._id) #{category.name}
+        div.form-group
+            label(for="password") Password: 
+            input#password(name="password", required)
+        button(type="submit") Submit
+    if errors
+        ul 
+            for error in errors 
+                li!= error.msg

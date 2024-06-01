@@ -102,21 +102,40 @@ exports.item_create_post = [
 ];
 
 exports.item_delete_get = asyncHandler(async (req, res, next) => {
-  const item = await Item.findById(req.params.id).exec()
+  const item = await Item.findById(req.params.id).exec();
 
-  if (item===null) {
-    res.redirect("/inventory/items")
+  if (item === null) {
+    res.redirect("/inventory/items");
   }
 
   res.render("item_delete", {
     title: "Delete Item",
-    item: item
-  })
+    item: item,
+  });
 });
 
-exports.item_delete_post = asyncHandler(async (req, res, next) => {
-  //delete data
-});
+exports.item_delete_post = [
+  body("password", "Password must not be empty.").trim().escape(),
+  body("password").equals("secret").withMessage("Enter the correct password"),
+
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+    console.log(errors)
+    const item = await Item.findById(req.params.id).exec();
+
+    if (!errors.isEmpty()) {
+      res.render("item_delete", {
+        title: "Delete Item",
+        item: item,
+        errors: errors.array(),
+      });
+      return;
+    } else {
+      await Item.findByIdAndDelete(req.body.itemid);
+      res.redirect("/inventory/items");
+    }
+  }),
+];
 
 exports.item_update_get = asyncHandler(async (req, res, next) => {
   //send update form

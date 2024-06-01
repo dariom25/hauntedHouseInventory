@@ -28,7 +28,7 @@ block content
                 option(value="") Select a Place
                 for place in places
                     if item 
-                        if place._id.toStrin()===item.place._id.toString()
+                        if place._id.toString()===item.place._id.toString()
                             option(value=place._id selected) #{place.name}
                         else
                             option(value=place._id) #{place.name} 
@@ -40,7 +40,7 @@ block content
                 option(value="") Select a Category
                 for category in categories
                     if item 
-                        if category._id.toStrin()===item.category._id.toString()
+                        if category._id.toString()===item.category._id.toString()
                             option(value=category._id selected) #{category.name}
                         else
                             option(value=category._id) #{category.name} 

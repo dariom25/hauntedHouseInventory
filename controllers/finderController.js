@@ -20,7 +20,7 @@ exports.finder_detail = asyncHandler(async (req, res, next) => {
 });
 
 exports.finder_create_get = asyncHandler(async (req, res, next) => {
-  //send create form
+  res.render("finder_form", { title: "Create finder" });
 });
 
 exports.finder_create_post = asyncHandler(async (req, res, next) => {

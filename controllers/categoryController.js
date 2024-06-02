@@ -47,7 +47,16 @@ exports.category_create_post = [
 ];
 
 exports.category_delete_get = asyncHandler(async (req, res, next) => {
-  //send delete form
+  const category = await Category.find({}).exec();
+
+  if (category === null) {
+    res.redirect("/inventory/categories");
+  }
+
+  res.render("category_delete", {
+    title: "Delete Category",
+    category: category,
+  });
 });
 
 exports.category_delete_post = asyncHandler(async (req, res, next) => {

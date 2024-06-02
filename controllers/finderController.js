@@ -117,7 +117,16 @@ exports.finder_delete_post = [
 ];
 
 exports.finder_update_get = asyncHandler(async (req, res, next) => {
-  //send update form
+  const finder = await Finder.findById(req.params.id)
+
+  if (finder === null) {
+    res.redirect("/invetory/finders")
+  }
+
+  res.render("finder_update", {
+    title: "Update Finder",
+    finder: finder
+  })
 });
 
 exports.finder_update_post = asyncHandler(async (req, res, next) => {

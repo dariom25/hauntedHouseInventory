@@ -23,3 +23,7 @@ block content
             label(for="found_items") Number of found items:
             input#found_items(type="number", name="found_items")
         button(type="submit") Submit
+    if errors
+        ul 
+            for error in errors 
+                li!= error.msg

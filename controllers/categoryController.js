@@ -94,6 +94,31 @@ exports.category_update_get = asyncHandler(async (req, res, next) => {
   });
 });
 
-exports.category_update_post = asyncHandler(async (req, res, next) => {
-  //send data from form and update entry
-});
+exports.category_update_post = [
+  body("password", "Password must not be empty.").trim().escape(),
+  body("password").equals("secret").withMessage("Enter the correct password"),
+
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+    const category = new Category({
+      name: req.body.name,
+      _id: req.params.id,
+    });
+
+    if (!errors.isEmpty()) {
+      const category = await Category.findById(req.params.id).exec();
+
+      res.render("category_update", {
+        title: "Update Category",
+        category: category,
+      });
+    } else {
+      const updatedCategory = await Category.findByIdAndUpdate(
+        req.params.id,
+        category,
+        {}
+      );
+      res.redirect(updatedCategory.url);
+    }
+  }),
+];

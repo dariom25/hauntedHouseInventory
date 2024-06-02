@@ -73,7 +73,13 @@ exports.finder_create_post = [
 ];
 
 exports.finder_delete_get = asyncHandler(async (req, res, next) => {
-  //send delete form
+  const finder = await Finder.findById(req.params.id).exec();
+
+  if (item === null) {
+    res.redirect("/invetory/finders");
+  }
+
+  res.render("finder_delete", { title: "Delete Finder", finder: finder });
 });
 
 exports.finder_delete_post = asyncHandler(async (req, res, next) => {

@@ -1,0 +1,14 @@
+extends layout
+
+block content
+    h2 #{title}
+
+    if place_list.length
+        ul
+            each place in place_list
+                li
+                    p 
+                        a(href=place.url) #{place.name}
+
+    else
+        p No categories found.

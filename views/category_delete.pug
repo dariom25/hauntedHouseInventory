@@ -1,0 +1,19 @@
+extends layout 
+
+block content 
+    h2 #{title}
+    
+    p #[strong Do you really want to delete #{category.name}?]
+
+    form(method="POST")
+        div.form-group  
+            input#categoryid(type="hidden", name="categoryid", value=category._id)
+        div.form-group
+            label(for="password") Secret password:
+            input#password(name="password", required, type="text")
+        button(type="submit") Delete
+    
+    if errors
+        ul 
+            for error in errors 
+                li!= error.msg

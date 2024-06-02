@@ -11,18 +11,18 @@ block content
                     dt
                         a(href=item.url) #{item.name}
                     dd #{item.summary}
+    else 
+        p #[strong Do you really want to delete #{finder.name}?]
 
-    p #[strong Do you really want to delete #{finder.name}?]
-
-    form(method="POST")
-        div.form-group  
-            input#finderid(type="hidden", name="finderid", value=finder._id)
-        div.form-group
-            label(for="password") Secret password:
-            input#password(name="password", required, type="text")
-        button(type="submit") Delete
-    
-    if errors
-        ul 
-            for error in errors 
-                li!= error.msg
+        form(method="POST")
+            div.form-group  
+                input#finderid(type="hidden", name="finderid", value=finder._id)
+            div.form-group
+                label(for="password") Secret password:
+                input#password(name="password", required, type="text")
+            button(type="submit") Delete
+        
+        if errors
+            ul 
+                for error in errors 
+                    li!= error.msg

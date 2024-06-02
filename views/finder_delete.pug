@@ -1,0 +1,28 @@
+extends layout 
+
+block content 
+    h2 #{title}
+    if finder_items.length 
+        p #[strong Delete the following items before attempting to delete this finder.]
+        div(style='margin-left:20px;margin-top:20px')
+            h4 Items
+            dl
+                each item in finder_items
+                    dt
+                        a(href=item.url) #{item.name}
+                    dd #{item.summary}
+
+    p #[strong Do you really want to delete #{finder.name}?]
+
+    form(method="POST")
+        div.form-group  
+            input#finderid(type="hidden", name="finderid", value=finder._id)
+        div.form-group
+            label(for="password") Secret password:
+            input#password(name="password", required, type="text")
+        button(type="submit") Delete
+    
+    if errors
+        ul 
+            for error in errors 
+                li!= error.msg

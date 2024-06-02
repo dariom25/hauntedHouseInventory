@@ -47,7 +47,7 @@ exports.category_create_post = [
 ];
 
 exports.category_delete_get = asyncHandler(async (req, res, next) => {
-  const category = await Category.find({}).exec();
+  const category = await Category.findById(req.params.id).exec();
 
   if (category === null) {
     res.redirect("/inventory/categories");
@@ -59,9 +59,27 @@ exports.category_delete_get = asyncHandler(async (req, res, next) => {
   });
 });
 
-exports.category_delete_post = asyncHandler(async (req, res, next) => {
-  //delete data
-});
+exports.category_delete_post = [
+  body("password", "Password must not be empty.").trim().escape(),
+  body("password").equals("secret").withMessage("Enter the correct password"),
+
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+    const category = await Category.findById(req.params.id).exec();
+
+    if (!errors.isEmpty()) {
+      res.render("category_delete", {
+        title: "Delete Category",
+        category: category,
+        errors: errors.array(),
+      });
+      return;
+    } else {
+      await Category.findByIdAndDelete(req.body.categoryid);
+      res.redirect("/inventory/categories");
+    }
+  }),
+];
 
 exports.category_update_get = asyncHandler(async (req, res, next) => {
   //send update form

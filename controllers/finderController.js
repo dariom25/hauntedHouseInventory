@@ -1,6 +1,6 @@
 const { body, validationResult } = require("express-validator");
 const Finder = require("../models/finder");
-const Item = require("../models/items")
+const Item = require("../models/items");
 const asyncHandler = require("express-async-handler");
 
 exports.finder_list = asyncHandler(async (req, res, next) => {
@@ -76,19 +76,45 @@ exports.finder_create_post = [
 exports.finder_delete_get = asyncHandler(async (req, res, next) => {
   const [finder, allItemsByFinder] = await Promise.all([
     Finder.findById(req.params.id).exec(),
-    Item.find({finder: req.params.id}, "name summary").exec()
-  ])
+    Item.find({ finder: req.params.id }, "name summary").exec(),
+  ]);
 
   if (finder === null) {
     res.redirect("/invetory/finders");
   }
 
-  res.render("finder_delete", { title: "Delete Finder", finder: finder, finder_items: allItemsByFinder });
+  res.render("finder_delete", {
+    title: "Delete Finder",
+    finder: finder,
+    finder_items: allItemsByFinder,
+  });
 });
 
-exports.finder_delete_post = asyncHandler(async (req, res, next) => {
-  //delete data
-});
+exports.finder_delete_post = [
+  body("password", "Password must not be empty.").trim().escape(),
+  body("password").equals("secret").withMessage("Enter the correct password"),
+
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+
+    const [finder, allItemsByFinder] = await Promise.all([
+      Finder.findById(req.params.id).exec(),
+      Item.find({ finder: req.params.id }, "name summary").exec(),
+    ]);
+
+    if (allItemsByFinder.length > 0) {
+      res.render("finder_delete", {
+        title: "Delete Finder",
+        finder: finder,
+        finder_items: allItemsByFinder,
+      });
+      return;
+    } else {
+      await Finder.findByIdAndDelete(req.body.finderid);
+      res.redirect("/inventory/finders");
+    }
+  }),
+];
 
 exports.finder_update_get = asyncHandler(async (req, res, next) => {
   //send update form

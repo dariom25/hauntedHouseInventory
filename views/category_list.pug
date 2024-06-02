@@ -1,0 +1,14 @@
+extends layout
+
+block content
+    h2 #{title}
+
+    if category_list.length
+        ul
+            each category in category_list
+                li
+                    p 
+                        a(href=category.url) #{category.name}
+
+    else
+        p No categories found.

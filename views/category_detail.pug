@@ -1,0 +1,12 @@
+extends layout
+
+block content
+    h2 More information about: #{title}
+
+    div.information-container
+        p Name: #{category.name}
+    hr
+    div.link-containter
+        a(href="/inventory/categorys") Back
+        a(href=category.url+"/update") Update Category
+        a(href=category.url+"/delete") Delete Category

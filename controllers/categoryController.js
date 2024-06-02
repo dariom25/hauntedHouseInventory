@@ -82,7 +82,16 @@ exports.category_delete_post = [
 ];
 
 exports.category_update_get = asyncHandler(async (req, res, next) => {
-  //send update form
+  const category = await Category.findById(req.params.id).exec();
+
+  if (category === null) {
+    res.redirect("/inventory/categories");
+  }
+
+  res.render("category_update", {
+    title: "Update Category",
+    category: category,
+  });
 });
 
 exports.category_update_post = asyncHandler(async (req, res, next) => {

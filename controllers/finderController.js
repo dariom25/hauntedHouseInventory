@@ -117,18 +117,47 @@ exports.finder_delete_post = [
 ];
 
 exports.finder_update_get = asyncHandler(async (req, res, next) => {
-  const finder = await Finder.findById(req.params.id)
+  const finder = await Finder.findById(req.params.id);
 
   if (finder === null) {
-    res.redirect("/invetory/finders")
+    res.redirect("/invetory/finders");
   }
 
   res.render("finder_update", {
     title: "Update Finder",
-    finder: finder
-  })
+    finder: finder,
+  });
 });
 
-exports.finder_update_post = asyncHandler(async (req, res, next) => {
-  //send data from form and update entry
-});
+exports.finder_update_post = [
+  body("password", "Password must not be empty.").trim().escape(),
+  body("password").equals("secret").withMessage("Enter the correct password"),
+
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+    const finder = new Finder({
+      first_name: req.body.first_name,
+      last_name: req.body.last_name,
+      cause_of_death: req.body.cause_death,
+      no_of_found_items: req.body.found_items,
+      date_of_birth: req.body.birth,
+      date_of_death: req.body.death,
+      _id: req.params.id
+    });
+
+    if (!errors.isEmpty()) {
+      const finder = await Finder.findById(req.params.id);
+      res.render("finder_update", {
+        title: "Update Finder",
+        finder: finder,
+      });
+    } else {
+      const updatedFinder = await Finder.findByIdAndUpdate(
+        req.params.id,
+        finder,
+        {}
+      );
+      res.redirect(updatedFinder.url);
+    }
+  }),
+];

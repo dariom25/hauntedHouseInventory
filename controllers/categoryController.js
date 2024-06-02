@@ -1,34 +1,39 @@
-const Category = require("../models/category")
-const asyncHandler = require("express-async-handler")
+const Category = require("../models/category");
+const asyncHandler = require("express-async-handler");
 
 exports.category_list = asyncHandler(async (req, res, next) => {
-    //send category list
-})
+  const allCategories = await Category.find().exec();
+
+  res.render("category_list", {
+    title: "Category List",
+    category_list: allCategories,
+  });
+});
 
 exports.category_detail = asyncHandler(async (req, res, next) => {
-    //send category details
-})
+  //send category details
+});
 
 exports.category_create_get = asyncHandler(async (req, res, next) => {
-    //send create form
-})
+  //send create form
+});
 
 exports.category_create_post = asyncHandler(async (req, res, next) => {
-    //send data from form
-})
+  //send data from form
+});
 
 exports.category_delete_get = asyncHandler(async (req, res, next) => {
-    //send delete form
-})
+  //send delete form
+});
 
 exports.category_delete_post = asyncHandler(async (req, res, next) => {
-    //delete data
-})
+  //delete data
+});
 
 exports.category_update_get = asyncHandler(async (req, res, next) => {
-    //send update form
-})
+  //send update form
+});
 
 exports.category_update_post = asyncHandler(async (req, res, next) => {
-    //send data from form and update entry
-})
+  //send data from form and update entry
+});

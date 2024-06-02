@@ -1,5 +1,6 @@
 const { body, validationResult } = require("express-validator");
 const Finder = require("../models/finder");
+const Item = require("../models/items")
 const asyncHandler = require("express-async-handler");
 
 exports.finder_list = asyncHandler(async (req, res, next) => {
@@ -73,13 +74,16 @@ exports.finder_create_post = [
 ];
 
 exports.finder_delete_get = asyncHandler(async (req, res, next) => {
-  const finder = await Finder.findById(req.params.id).exec();
+  const [finder, allItemsByFinder] = await Promise.all([
+    Finder.findById(req.params.id).exec(),
+    Item.find({finder: req.params.id}, "name summary").exec()
+  ])
 
-  if (item === null) {
+  if (finder === null) {
     res.redirect("/invetory/finders");
   }
 
-  res.render("finder_delete", { title: "Delete Finder", finder: finder });
+  res.render("finder_delete", { title: "Delete Finder", finder: finder, finder_items: allItemsByFinder });
 });
 
 exports.finder_delete_post = asyncHandler(async (req, res, next) => {

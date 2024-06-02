@@ -18,15 +18,23 @@ FinderSchema.virtual("url").get(function () {
 
 FinderSchema.virtual("date_of_birth_formatted").get(function () {
   return this.date_of_birth
-    ? DateTime.fromJSDate(this.date_of_birth).toLocaleString(DateTime.Date_MED)
+    ? DateTime.fromJSDate(this.date_of_birth).toLocaleString(DateTime.DATE_MED)
     : "";
 });
 
 FinderSchema.virtual("date_of_death_formatted").get(function () {
   return this.date_of_death
-    ? DateTime.fromJSDate(this.date_of_death).toLocaleString(DateTime.Date_MED)
+    ? DateTime.fromJSDate(this.date_of_death).toLocaleString(DateTime.DATE_MED)
     : "";
 });
+
+FinderSchema.virtual("date_of_death_yyyymmdd").get(function() {
+  return DateTime.fromJSDate(this.date_of_death).toISODate(); 
+})
+
+FinderSchema.virtual("date_of_birth_yyyymmdd").get(function() {
+  return DateTime.fromJSDate(this.date_of_birth).toISODate(); 
+})
 
 FinderSchema.virtual("name").get(function () {
   let fullname = "";

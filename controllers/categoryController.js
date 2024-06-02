@@ -23,7 +23,7 @@ exports.category_detail = asyncHandler(async (req, res, next) => {
 });
 
 exports.category_create_get = asyncHandler(async (req, res, next) => {
-  //send create form
+  res.render("category_form", {title: "Create Category"})
 });
 
 exports.category_create_post = asyncHandler(async (req, res, next) => {

@@ -11,7 +11,15 @@ exports.category_list = asyncHandler(async (req, res, next) => {
 });
 
 exports.category_detail = asyncHandler(async (req, res, next) => {
-  //send category details
+  const category = await Category.findById(req.params.id).exec();
+
+  if (category === null) {
+    const err = new Error("Category not found");
+    err.status = 404;
+    return next(err);
+  }
+
+  res.render("category_detail", { title: category.name, category: category });
 });
 
 exports.category_create_get = asyncHandler(async (req, res, next) => {
